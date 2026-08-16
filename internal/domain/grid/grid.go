@@ -146,9 +146,9 @@ func (m *Machine) CompleteBlackStart(id string, now time.Time) error {
 	}
 	m.reconnectLocked = false
 	m.blackStartID = ""
-	// A queued grid-connect command only stays valid while this black start
-	// still holds the reconnect circuit.
-	if m.reconnectQueued && m.reconnectLocked {
+	// A grid-connect command queued during the black start resumes now that the
+	// reconnect circuit has been released (Rule 2).
+	if m.reconnectQueued {
 		m.reconnectQueued = false
 		m.state = StateSyncing
 		m.recordLocked("reconnect_resume", "queued reconnect resumed after black start")
